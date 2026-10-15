@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEGO Batman - Login</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+  <div class="main-wrapper">
+    <div class="image-container">
+      <img src="Batman_29.webp" alt="Batman" class="bat-img">
+    </div>
+
+    <form id="login-form" class="bat-container">
+      <h2 class="bat-title">Acesso Batcaverna</h2>
+      
+      <label for="email">Bat-Email:</label>
+      <input type="email" id="email" name="email" placeholder="batman@batcave.com" required>
+
+      <label for="senha">Bat-Senha:</label>
+      <input type="password" id="senha" name="senha" placeholder="Sua senha secretíssima" required>
+
+      <button type="submit" id="btnLogin">Entrar</button>
+      
+      <div class="cadastro-link">
+        <p>Não tem conta?</p>
+        <button type="button" id="btnIrCadastro" class="btn-ir-cadastro">Cadastre-se</button>
+      </div>
+
+      <div id="mensagemLogin" style="margin-top: 15px; text-align: center; font-weight: bold;"></div>
+    </form>
+  </div>
+
+  <script>
+    const form = document.getElementById('login-form');
+    const mensagemLogin = document.getElementById('mensagemLogin');
+    const btnIrCadastro = document.getElementById('btnIrCadastro');
+
+    btnIrCadastro.addEventListener('click', () => {
+      window.location.href = 'cadastro.html';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, senha })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          mensagemLogin.style.color = '#00ff00';
+          mensagemLogin.innerText = 'Acesso permitido! Entrando no Chat...';
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 1000);
+        } else {
+          mensagemLogin.style.color = '#ff4d4d';
+          mensagemLogin.innerText = data.erro || 'Erro no login.';
+        }
+      } catch (err) {
+        mensagemLogin.style.color = '#ff4d4d';
+        mensagemLogin.innerText = 'Servidor indisponível.';
+      }
+    });
+  </script>
+</body>
+</html>
