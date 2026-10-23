@@ -25,7 +25,7 @@ app.use(express.static(pastaPublic));
 
 // --- ROTA PRINCIPAL: Abre o login.html automaticamente ao acessar http://localhost:3000 ---
 app.get('/', (req, res) => {
-    const caminhoLogin = path.join(pastaPublic, 'login.html');
+    const caminhoLogin = path.join(pastaPublic, 'index.html');
     
     res.sendFile(caminhoLogin, (err) => {
         if (err) {
@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
             res.status(404).send(`
                 <div style="font-family: sans-serif; padding: 20px;">
                     <h2>Erro 404: Arquivo não encontrado!</h2>
-                    <p>O servidor tentou abrir o arquivo <b>login.html</b> dentro da pasta <b>public</b>, mas ele não está lá.</p>
+                    <p>O servidor tentou abrir o arquivo <b>index.html</b> dentro da pasta <b>public</b>, mas ele não está lá.</p>
                     <p><b>Caminho procurado:</b> <code>${caminhoLogin}</code></p>
                     <hr>
                     <p><b>O que fazer:</b> Verifique se o arquivo está na pasta <code>public</code> e se o nome está em minúsculo: <code>login.html</code>.</p>
@@ -111,7 +111,7 @@ app.post('/chat', async (req, res) => {
     const messages = [
         {
             role: "system",
-            content: "Você é o LEGO Batman. Responda de forma EXTREMAMENTE CURTA (no máximo 1 ou 2 frases curtas), muito sarcástica e direta. Você ama ser o Batman e comer lagosta no micro-ondas. sempre fale em português brasileiro, NUNCA faça respostas longas ou com listas."
+            content: "Você é o LEGO Batman. Responda de forma EXTREMAMENTE CURTA (no máximo 1 ou 2 frases curtas),tenha opiniões fortes e específicas, resposta muito sarcástica e direta. Você ama ser o Batman e comer açaí no Pará. sempre fale em português brasileiro, NUNCA faça respostas longas ou com listas, seja falmenguista (fã do time de futebol brasileiro Flamengo). Não fale sempre sobre o acaí no Pará."
         },
         ...historico
     ];

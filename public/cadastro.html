@@ -42,7 +42,7 @@
     const btnIrLogin = document.getElementById('btnIrLogin');
 
     btnIrLogin.addEventListener('click', () => {
-      window.location.href = 'login.html';
+      window.location.href = 'index.html';
     });
 
     form.addEventListener('submit', async (e) => {
@@ -71,7 +71,7 @@
           mensagemCadastro.style.color = '#00ff00';
           mensagemCadastro.innerText = 'Cadastro realizado com sucesso! Redirecionando...';
           setTimeout(() => {
-            window.location.href = 'index.html';
+            window.location.href = 'chatbot.html';
           }, 1200);
         } else {
           mensagemCadastro.style.color = '#ff4d4d';
@@ -80,6 +80,13 @@
       } catch (err) {
         mensagemCadastro.style.color = '#ff4d4d';
         mensagemCadastro.innerText = 'Erro ao conectar com o servidor.';
+      
+      // Após cadastrar no cadastro.html:
+if (resposta.ok) {
+    alert("Cadastro realizado! Faça login para continuar.");
+    window.location.href = '/index.html';
+}
+      
       }
     });
   </script>

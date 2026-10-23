@@ -1,121 +1,78 @@
 body {
-  background: radial-gradient(circle, #3a3a3a 0%, #1a1a1a 100%), url('ferb2.png');
+  background-color: #1a1a1a;
   color: #ffe600;
   font-family: 'Arial Black', Impact, sans-serif;
+  margin: 0;
+  padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  margin: 0;
-  overflow: hidden;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-/* Envolvente que posiciona o boneco e o chat lado a lado */
-.main-layout {
+/* Força a imagem e o formulário a ficarem lado a lado (row) */
+.main-wrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 10px; /* Distância entre o boneco e o chat */
+  gap: 40px;
+  max-width: 900px;
+  width: 100%;
 }
 
-/* Container do Canvas Three.js */
-#canvas-container {
-  width: 180px;
-  height: 480px;
+.image-container {
+  flex: 1;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
-.chat-container {
-  background-color: rgba(45, 45, 45, 0.95);
-  width: 380px;
-  height: 550px;
+.bat-img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  object-fit: contain;
+}
+
+.bat-container {
+  background-color: #2b2b2b;
   border: 4px solid #ffe600;
   border-radius: 12px;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.7);
+  padding: 24px;
+  width: 320px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  box-shadow: 0px 8px 0px #000;
+  box-sizing: border-box;
 }
 
-.chat-header {
-  background-color: #000;
-  padding: 15px;
+.bat-title {
   text-align: center;
-  border-bottom: 3px solid #ffe600;
-}
-
-.chat-header h1 {
-  margin: 0;
-  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 22px;
   text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
-.chat-box {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background-color: rgba(24, 24, 24, 0.8);
-}
-
-.mensagem {
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 3px solid #000;
-  max-width: 80%;
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.mensagem strong {
-  display: block;
-  font-family: 'Arial Black', sans-serif;
+label {
   font-size: 12px;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   text-transform: uppercase;
-}
-
-.mensagem p {
-  margin: 0;
-}
-
-.user-msg {
-  align-self: flex-end;
-  background-color: #ffe600;
-  color: #000;
-}
-
-.bat-msg {
-  align-self: flex-start;
-  background-color: #2a2a2a;
-  color: #fff;
-  border-color: #ffe600;
-}
-
-.chat-input-area {
-  display: flex;
-  padding: 12px;
-  background-color: #1f1f1f;
-  border-top: 3px solid #000;
-  gap: 8px;
 }
 
 input {
-  flex: 1;
   padding: 10px;
   border: 3px solid #000;
   border-radius: 6px;
   background-color: #fff;
   font-size: 14px;
   font-weight: bold;
+  margin-bottom: 16px;
   outline: none;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 input:focus {
@@ -123,7 +80,7 @@ input:focus {
 }
 
 button {
-  padding: 10px 16px;
+  padding: 12px;
   background-color: #ffe600;
   color: #000;
   border: 3px solid #000;
@@ -132,11 +89,62 @@ button {
   font-weight: 900;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0px 3px 0px #000;
+  box-shadow: 0px 4px 0px #000;
   transition: transform 0.1s, box-shadow 0.1s;
+  width: 100%;
 }
 
 button:active {
-  transform: translateY(3px);
+  transform: translateY(4px);
   box-shadow: 0px 0px 0px #000;
+}
+
+#mensagemCadastro {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 13px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+}
+
+.cadastro-link {
+  margin-top: 20px;
+  text-align: center;
+  border-top: 2px solid #444;
+  padding-top: 15px;
+}
+
+.cadastro-link p {
+  margin: 0 0 8px 0;
+  font-size: 11px;
+  color: #ccc;
+  font-family: Arial, sans-serif;
+}
+
+.btn-ir-cadastro {
+  display: inline-block;
+  color: #000000;
+  text-decoration: none;
+  font-size: 12px;
+  border: 2px solid #ffe600;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-ir-cadastro:hover {
+  background-color: #fbe414;
+  color: #000;
+}
+
+/* Responsividade: em telas pequenas (celulares), empilha verticalmente */
+@media (max-width: 768px) {
+  .main-wrapper {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .bat-img {
+    max-width: 250px;
+  }
 }
