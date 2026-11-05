@@ -4,7 +4,7 @@ import 'dotenv/config';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Resolvendo caminhos do sistema no modo ES Modules
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -12,39 +12,35 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const MODELO = 'openai/gpt-oss-20b';  
 
-// Banco de dados em memória para testes
+
 const user = [];
 
-// Middlewares para JSON e CORS
+
 app.use(express.json());
 app.use(cors());
 
-// Serve todos os arquivos estáticos da pasta "public" (HTML, CSS, imagens)
+
 const pastaPublic = path.join(__dirname, 'public');
 app.use(express.static(pastaPublic));
 
-// --- ROTA PRINCIPAL: Abre o login.html automaticamente ao acessar http://localhost:3000 ---
+
 app.get('/', (req, res) => {
     const caminhoLogin = path.join(pastaPublic, 'index.html');
     
     res.sendFile(caminhoLogin, (err) => {
         if (err) {
-            console.error(`\n❌ ERRO: O arquivo login.html não foi encontrado dentro da pasta public!`);
-            console.error(`Procurado em: ${caminhoLogin}\n`);
+            console.error(`\n❌ ERRO: O arquivo index.html não foi encontrado dentro da pasta public!`);
             res.status(404).send(`
                 <div style="font-family: sans-serif; padding: 20px;">
                     <h2>Erro 404: Arquivo não encontrado!</h2>
-                    <p>O servidor tentou abrir o arquivo <b>index.html</b> dentro da pasta <b>public</b>, mas ele não está lá.</p>
-                    <p><b>Caminho procurado:</b> <code>${caminhoLogin}</code></p>
-                    <hr>
-                    <p><b>O que fazer:</b> Verifique se o arquivo está na pasta <code>public</code> e se o nome está em minúsculo: <code>login.html</code>.</p>
+                    <p>O servidor tentou abrir o arquivo <b>index.html</b> dentro da pasta <b>public</b>.</p>
                 </div>
             `);
         }
     });
 });
 
-// --- ROTA DE CADASTRO ---
+
 app.post('/cadastro', (req, res) => {
     const { usuario, email, senha } = req.body;
 
@@ -52,19 +48,16 @@ app.post('/cadastro', (req, res) => {
         return res.status(400).json({ erro: "Preencha todos os campos!" });
     }
     
-    // Regra de validação: Senha deve ter pelo menos 8 caracteres
     if (senha.length < 8) {
         return res.status(400).json({ erro: "A senha deve ter no mínimo 8 caracteres!" });
     }
 
-    // Regra de validação: Verifica se o e-mail já foi utilizado
     const emailExiste = user.find((busca) => busca.email.toLowerCase() === email.toLowerCase());
 
     if (emailExiste) {
         return res.status(409).json({ erro: "Este e-mail já foi utilizado por outro herói!" });
     }
 
-    // Salva o novo usuário
     user.push({ usuario, email, senha });
 
     return res.json({
@@ -73,7 +66,7 @@ app.post('/cadastro', (req, res) => {
     });
 });
 
-// --- ROTA DE LOGIN ---
+
 app.post('/login', (req, res) => {
     const { email, senha } = req.body;
 
@@ -83,12 +76,10 @@ app.post('/login', (req, res) => {
 
     const usuarioExiste = user.find((busca) => busca.email.toLowerCase() === email.toLowerCase());
 
-    // Regra: Caso o e-mail não esteja cadastrado
     if (!usuarioExiste) {
         return res.status(404).json({ erro: "Usuário não encontrado! Por favor, cadastre-se primeiro." });
     }
 
-    // Regra: Caso a senha esteja incorreta
     if (usuarioExiste.senha !== senha) {
         return res.status(401).json({ erro: "Senha incorreta!" });
     }
@@ -99,13 +90,13 @@ app.post('/login', (req, res) => {
     });
 });
 
-// --- ROTA DO CHAT (Groq API) ---
+
 app.post('/chat', async (req, res) => {
     const API_KEY = process.env.API_KEY_GROQ ? process.env.API_KEY_GROQ.trim() : null;
     const historico = Array.isArray(req.body.historico) ? req.body.historico : [];
 
     if (!API_KEY) {
-        return res.status(500).json({ erro: "API Key da Groq não configurada no arquivo .env!" });
+        return res.status(500).json({ erro: "API Key da Groq não configurada nas variáveis do Vercel!" });
     }
 
     const messages = [
@@ -146,9 +137,12 @@ app.post('/chat', async (req, res) => {
 });
 
 
-// Inicialização do Servidor
-app.listen(PORT, () => {
-    console.log(`\n🦇 Batcaverna rodando!`);
-    console.log(`📍 Acesse em: http://localhost:${PORT}`);
-    console.log(`📁 Buscando arquivos na pasta: ${pastaPublic}\n`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`\n🦇 Batcaverna rodando localmente!`);
+        console.log(`📍 Acesse em: http://localhost:${PORT}\n`);
+    });
+}
+
+
+export default app;
