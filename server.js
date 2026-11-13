@@ -15,7 +15,7 @@ const MODELO = 'openai/gpt-oss-20b';
 
 const user = [];
 
-
+ 
 app.use(express.json());
 app.use(cors());
 
